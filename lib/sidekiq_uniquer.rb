@@ -3,6 +3,7 @@ require 'sidekiq_uniquer/middleware'
 require 'sidekiq_uniquer/process_digest'
 require 'sidekiq_uniquer/redis_lock'
 require 'sidekiq_uniquer/strategies'
+require 'sidekiq_uniquer/strategy'
 require 'sidekiq_uniquer/version'
 
 module SidekiqUniquer

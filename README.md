@@ -50,6 +50,28 @@ SidekiqUniquer.configure do |c|
 end
 ```
 
+## Extending
+Additional job locking strategies can be defined in your application and registered. To define a strategy, create a new class to encapsulate the strategy and `include SidekiqUniquer::Strategy`. This mixin will provide a constructor, `job_lock`, `process_lock`, and `options` method to help define your locking strategy. Your lock should respond to the `push` (for enqueuing jobs) and `perform` methods (for running jobs).
+
+Here's an example that will lock
+
+```ruby
+class Throttle
+  include SidekiqUniquer::Strategy
+
+  def push
+    return false unless job_lock.lock
+    yield
+  end
+
+  def perform
+    yield
+  end
+end
+
+SidekiqUniquer::Strategies.register(:throttle, Throttle)
+```
+
 ## Contributing
 TBD
 

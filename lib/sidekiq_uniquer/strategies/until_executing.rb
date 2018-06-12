@@ -1,9 +1,13 @@
+require 'sidekiq_uniquer/strategy'
+
 module SidekiqUniquer
   module Strategies
     # This strategy locks a job until it begins processing. Once the job starts running,
     # another will be allowed to be enqueued. It does not guarantee that the two jobs will
     # not run simultaneously.
-    class UntilExecuting < Base
+    class UntilExecuting
+      include Strategy
+
       def push
         return false unless job_lock.lock
         yield

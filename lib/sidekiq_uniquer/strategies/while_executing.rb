@@ -1,9 +1,13 @@
+require 'sidekiq_uniquer/strategy'
+
 module SidekiqUniquer
   module Strategies
     # This strategy allows any number of jobs to be enqueued, but only allows one to be
     # executed at a time. Other jobs will have to wait for a lock if the lock_timeout option
     # is non-zero, or will be discarded if timeout is zero (default).
-    class WhileExecuting < Base
+    class WhileExecuting
+      include Strategy
+
       def push
         yield
       end

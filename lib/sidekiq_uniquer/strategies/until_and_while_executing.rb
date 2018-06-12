@@ -1,9 +1,13 @@
+require 'sidekiq_uniquer/strategy'
+
 module SidekiqUniquer
   module Strategies
     # This strategy locks a job until it has started executing, at which point a new job
     # is allowed to be queued. However, the job is still locked at execution time to ensure
     # that only a single job is executed simultaneously.
-    class UntilAndWhileExecuting < Base
+    class UntilAndWhileExecuting
+      include Strategy
+
       def push
         return false unless job_lock.lock
         yield
